@@ -1,0 +1,267 @@
+package maro1;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.Scanner;
+
+import javax.swing.Box;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JFileChooser;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
+
+public class Budowa2 extends JFrame implements ActionListener  {
+
+	private JTextField tIleHajsuDostaniesz, tCoToZaZlecenie, tWpiszIleGodzinPracowales, tRezultat;
+	private JLabel lIleHajsuDostaniesz, lCoToZaZlecenie, lWpiszIleGodzinPracowales, lRezultat; 
+	private JButton bZacznijPrace, bPrzeliczStawkeGodzinowa, bZapiszGodzinyDzisiejszejPracy;
+	private double hajs, czasZapisz, godziny;
+	JMenuBar menuBar;
+	JMenu menuPlik, menuNarzedzia, menuPomoc, menuOpcje;
+	JMenuItem mOtworz, mZapisz, mWyjscie, mNarz1, mNarz2, mOpcja1, mOpcja2, mOProgramie;
+	JCheckBoxMenuItem chOpcja3;
+	JTextArea taNotatnik;
+	
+	
+	
+	public Budowa2(){	
+		
+		//ustawia rozmiar ramki,tytuł layout zerowy
+		setSize(600,650);
+		setTitle(" Hajs/Roboczogodziny");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLayout(null);
+		
+		//tworzy etykite i pole tekstowe
+		lIleHajsuDostaniesz = new JLabel("Ile hajsu dostaniesz?" ,JLabel.RIGHT);
+		lIleHajsuDostaniesz.setBounds(50,50,150,20);
+		tIleHajsuDostaniesz = new JTextField();
+		tIleHajsuDostaniesz.setBounds(50, 70, 150, 20);
+		tIleHajsuDostaniesz.setToolTipText("Podaj kwotę za jaką zgodziłeś się podjąć wyzwanie.");
+		
+		//tworzy etykite i pole tekstowe
+		lCoToZaZlecenie = new JLabel("Co to za zlecenie?" ,JLabel.RIGHT);
+		lCoToZaZlecenie.setBounds(50,100,150,20);
+		tCoToZaZlecenie = new JTextField();
+		tCoToZaZlecenie.setBounds(50, 120, 150, 20);
+		tCoToZaZlecenie.setToolTipText("Podaj nazwę zlecenia");
+		
+		//tworzy etykiete i poletekstowe
+		lWpiszIleGodzinPracowales = new JLabel("Roboczogodziny:" ,JLabel.RIGHT);
+		lWpiszIleGodzinPracowales.setBounds(50,150,150,20);
+		tWpiszIleGodzinPracowales = new JTextField();
+		tWpiszIleGodzinPracowales.setBounds(50, 170, 150, 20);
+		tWpiszIleGodzinPracowales.setToolTipText("Podaja ilość godzin jakie dziś przeznaczyłeś na zlecenie");
+		
+		//tworzy etykiete i poletekstowe
+		lRezultat = new JLabel("Stawka Godzinowa:" ,JLabel.RIGHT);
+		lRezultat.setBounds(50,200,150,20);
+		tRezultat = new JTextField();
+		tRezultat.setBounds(50, 220, 150, 20);
+		tRezultat.setToolTipText("Stawka godzinowa wynosi");
+		
+		//dodaje etykiety i pola tekstowe do apki
+		add(tIleHajsuDostaniesz);
+		add(lIleHajsuDostaniesz);
+		add(tCoToZaZlecenie);
+		add(lCoToZaZlecenie);
+		add(tWpiszIleGodzinPracowales);
+		add(lWpiszIleGodzinPracowales);
+		add(tRezultat);
+		add(lRezultat);
+		
+		//tworzy przycisk i dodaje słuchacza
+		bZacznijPrace = new JButton("Zacznij Pracę");
+		bZacznijPrace.setBounds(50, 270, 150, 20);
+		bZacznijPrace.addActionListener(this);
+		
+		//tworzy przycisk i dodaje słuchacza
+		bZapiszGodzinyDzisiejszejPracy = new JButton("Zapisz godziny");
+		bZapiszGodzinyDzisiejszejPracy.setBounds(220, 170, 150, 20);
+		bZapiszGodzinyDzisiejszejPracy.addActionListener(this);
+		
+		//tworzy przycisk i dodaje słuchacza
+		bPrzeliczStawkeGodzinowa = new JButton("Przelicz");
+		bPrzeliczStawkeGodzinowa.setBounds(220, 220, 150, 20);
+		bPrzeliczStawkeGodzinowa.addActionListener(this);
+		
+		//dodajemyprzyciki
+		add(bZapiszGodzinyDzisiejszejPracy);
+		add(bZacznijPrace);
+		add(bPrzeliczStawkeGodzinowa);
+		
+		menuBar = new JMenuBar();
+		menuPlik = new JMenu("Plik");
+		
+		mOtworz = new JMenuItem("Otwórz", 'O');
+		mOtworz.addActionListener(this);
+		mZapisz = new JMenuItem("Zapisz");
+		mZapisz.addActionListener(this);
+		mWyjscie = new JMenuItem("Wyjście");
+		
+		menuPlik.add(mOtworz);
+		menuPlik.add(mZapisz);
+		menuPlik.addSeparator();
+		menuPlik.add(mWyjscie);
+		
+		mWyjscie.addActionListener(this);
+		mWyjscie.setAccelerator(KeyStroke.getKeyStroke("ctrl X"));
+		
+		menuNarzedzia = new JMenu("Narzędzia");
+		mNarz1 = new JMenuItem("Narzędzie 1");
+		mNarz1.setEnabled(false);
+		mNarz2 = new JMenuItem("Narzędzie 2");
+		mNarz2.addActionListener(this);
+		
+		menuNarzedzia.add(mNarz1);
+		menuNarzedzia.add(mNarz2);
+		
+			menuOpcje = new JMenu("Opcje");
+			mOpcja1 = new JMenuItem("Opcja 1");
+			mOpcja2 = new JMenuItem("Opcja 2");
+			chOpcja3 = new JCheckBoxMenuItem("Opcja 3");
+			chOpcja3.addActionListener(this);
+			
+			menuOpcje.add(mOpcja1);
+			menuOpcje.add(mOpcja2);
+			menuOpcje.add(chOpcja3);
+		menuNarzedzia.add(menuOpcje);	
+		
+		menuBar.add(Box.createVerticalGlue());
+		
+		menuPomoc = new JMenu("Pomoc");
+		mOProgramie = new JMenuItem("O Programie");
+		mOProgramie.addActionListener(this);
+		menuPomoc.add(mOProgramie);
+		
+		setJMenuBar(menuBar);
+		menuBar.add(menuPlik);
+		menuBar.add(menuNarzedzia);
+		menuBar.add(menuPomoc);
+		
+		
+		taNotatnik = new JTextArea();
+		JScrollPane scrollPane = new JScrollPane(taNotatnik);
+		scrollPane.setBounds(50, 330, 150, 40);
+		add(scrollPane);
+	}
+	
+	
+	
+	public static void main(String[] args) {
+	
+		Budowa2 app = new Budowa2();
+		app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		app.setVisible(true);
+		
+	}
+
+
+
+	@Override//wybiera przycisk i startuje metode
+	public void actionPerformed(ActionEvent e) {
+		Object z = e.getSource();
+		if(z == bZapiszGodzinyDzisiejszejPracy)
+		{
+			//int a = 
+		}
+		if(z == bZacznijPrace)
+		{
+			 StoperSzukam s=new StoperSzukam();
+		      s.run();
+		}
+		if(z == bPrzeliczStawkeGodzinowa)
+		{
+			czasZapisz = Double.parseDouble(tIleHajsuDostaniesz.getText());
+			godziny = Double.parseDouble(tWpiszIleGodzinPracowales.getText());
+			hajs = czasZapisz / godziny ;
+			tRezultat.setText(String.valueOf(hajs));
+		}
+		
+		if(z == mOtworz)
+		{
+			JFileChooser fc = new JFileChooser();
+			if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
+			{
+				File plik = fc.getSelectedFile();
+				//JOptionPane.showMessageDialog(null, "Wybrany plik to: " + plik.getName());
+				try 
+				{
+					Scanner skaner = new Scanner(plik);
+					while(skaner.hasNext())
+						taNotatnik.append(skaner.nextLine()+ "\n");
+					
+				} catch (FileNotFoundException e1) 
+				{
+					e1.printStackTrace();
+				}
+			}
+		}
+		else if(z == mZapisz)
+		{
+			JFileChooser fc = new JFileChooser();
+			if(fc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION)
+			{
+				File plik = fc.getSelectedFile();
+				//JOptionPane.showMessageDialog(null, "Wybrany plik to: " + plik);
+				try 
+				{
+					PrintWriter pw = new PrintWriter(plik);
+					Scanner skaner = new Scanner(taNotatnik.getText());
+					while(skaner.hasNext())
+					{
+						pw.println(skaner.nextLine() + "\n");
+					}
+					pw.close();
+				} 
+				catch (FileNotFoundException e1) 
+				{
+					e1.printStackTrace();
+				}
+				
+			}
+		}
+		else if(z == mWyjscie)
+		{
+			int odp = JOptionPane.showConfirmDialog(this, "Czy napewno chcesz opuścić program? ", "Pytanie", JOptionPane.YES_NO_OPTION);
+			if(odp == JOptionPane.YES_OPTION)
+			dispose();
+			else if(odp == JOptionPane.NO_OPTION)
+				JOptionPane.showMessageDialog(this, "A jednak zostajesz...");
+		}
+		if(z == chOpcja3)
+		{
+			if(chOpcja3.isSelected())
+				mNarz1.setEnabled(true);
+			else if(!chOpcja3.isSelected())
+				mNarz1.setEnabled(false);
+		}
+		if(z == mNarz2)
+		{
+			String sMetry = JOptionPane.showInputDialog("Podaj długość w metrach");
+			double dMetry = Double.parseDouble(sMetry);
+			double dStopy = dMetry / 0.3048;
+			String sStopy = String.format("%.2f", dStopy);
+			JOptionPane.showMessageDialog(null, dMetry + " metrów = " + sStopy + " stóp");
+		}
+		if(z == mOProgramie)
+			JOptionPane.showMessageDialog(this, "Program made by Czaki \nversion 1.0", "O Programie", JOptionPane.INFORMATION_MESSAGE);
+		
+	}
+	}
+	
+	
+
+
