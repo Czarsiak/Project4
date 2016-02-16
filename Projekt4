@@ -1,0 +1,119 @@
+package maro1;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+
+public class Budowa1 extends JFrame implements ActionListener  {
+
+	private JTextField tIleHajsuDostaniesz, tCoToZaZlecenie, tWpiszIleGodzinPracowales, tRezultat;
+	private JLabel lIleHajsuDostaniesz, lCoToZaZlecenie, lWpiszIleGodzinPracowales, lRezultat; 
+	private JButton bZacznijPrace, bPrzeliczStawkeGodzinowa, bZapiszGodzinyDzisiejszejPracy;
+	private double hajs, czasZapisz, godziny;
+	
+	public Budowa1(){	
+		
+		//ustawia rozmiar ramki,tytuł layout zerowy
+		setSize(500,450);
+		setTitle(" Hajs/Roboczogodziny");
+		setLayout(null);
+		
+		//tworzy etykite i pole tekstowe
+		lIleHajsuDostaniesz = new JLabel("Ile hajsu dostaniesz?" ,JLabel.RIGHT);
+		lIleHajsuDostaniesz.setBounds(50,50,150,20);
+		tIleHajsuDostaniesz = new JTextField();
+		tIleHajsuDostaniesz.setBounds(50, 70, 150, 20);
+		tIleHajsuDostaniesz.setToolTipText("Podaj kwotę za jaką zgodziłeś się podjąć wyzwanie.");
+		
+		//tworzy etykite i pole tekstowe
+		lCoToZaZlecenie = new JLabel("Co to za zlecenie?" ,JLabel.RIGHT);
+		lCoToZaZlecenie.setBounds(50,100,150,20);
+		tCoToZaZlecenie = new JTextField();
+		tCoToZaZlecenie.setBounds(50, 120, 150, 20);
+		tCoToZaZlecenie.setToolTipText("Podaj nazwę zlecenia");
+		
+		//tworzy etykiete i poletekstowe
+		lWpiszIleGodzinPracowales = new JLabel("Roboczogodziny:" ,JLabel.RIGHT);
+		lWpiszIleGodzinPracowales.setBounds(50,150,150,20);
+		tWpiszIleGodzinPracowales = new JTextField();
+		tWpiszIleGodzinPracowales.setBounds(50, 170, 150, 20);
+		tWpiszIleGodzinPracowales.setToolTipText("Podaja ilość godzin jakie dziś przeznaczyłeś na zlecenie");
+		
+		//tworzy etykiete i poletekstowe
+		lRezultat = new JLabel("Stawka Godzinowa:" ,JLabel.RIGHT);
+		lRezultat.setBounds(50,200,150,20);
+		tRezultat = new JTextField();
+		tRezultat.setBounds(50, 220, 150, 20);
+		tRezultat.setToolTipText("Stawka godzinowa wynosi");
+		
+		//dodaje etykiety i pola tekstowe do apki
+		add(tIleHajsuDostaniesz);
+		add(lIleHajsuDostaniesz);
+		add(tCoToZaZlecenie);
+		add(lCoToZaZlecenie);
+		add(tWpiszIleGodzinPracowales);
+		add(lWpiszIleGodzinPracowales);
+		add(tRezultat);
+		add(lRezultat);
+		
+		//tworzy przycisk i dodaje słuchacza
+		bZacznijPrace = new JButton("Zacznij Pracę");
+		bZacznijPrace.setBounds(50, 270, 150, 20);
+		bZacznijPrace.addActionListener(this);
+		
+		//tworzy przycisk i dodaje słuchacza
+		bZapiszGodzinyDzisiejszejPracy = new JButton("Zapisz godziny");
+		bZapiszGodzinyDzisiejszejPracy.setBounds(220, 170, 150, 20);
+		bZapiszGodzinyDzisiejszejPracy.addActionListener(this);
+		
+		//tworzy przycisk i dodaje słuchacza
+		bPrzeliczStawkeGodzinowa = new JButton("Przelicz");
+		bPrzeliczStawkeGodzinowa.setBounds(220, 220, 150, 20);
+		bPrzeliczStawkeGodzinowa.addActionListener(this);
+		
+		//dodajemyprzyciki
+		add(bZapiszGodzinyDzisiejszejPracy);
+		add(bZacznijPrace);
+		add(bPrzeliczStawkeGodzinowa);
+	}
+	
+	
+	
+	public static void main(String[] args) {
+	
+		Budowa1 app = new Budowa1();
+		app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		app.setVisible(true);
+		
+	}
+
+
+
+	@Override//wybiera przycisk i startuje metode
+	public void actionPerformed(ActionEvent e) {
+		Object source = e.getSource();
+		if(source == bZapiszGodzinyDzisiejszejPracy)
+		{
+			//int a = 
+		}
+		if(source == bZacznijPrace)
+		{
+			 StoperSzukam s=new StoperSzukam();
+		      s.run();
+		}
+		if(source == bPrzeliczStawkeGodzinowa)
+		{
+			czasZapisz = Double.parseDouble(tIleHajsuDostaniesz.getText());
+			godziny = Double.parseDouble(tWpiszIleGodzinPracowales.getText());
+			hajs = czasZapisz / godziny ;
+			tRezultat.setText(String.valueOf(hajs));
+		}
+	}
+	
+	
+
+}
